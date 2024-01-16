@@ -3,15 +3,15 @@ import {promises as fs} from "fs"
 class ProductManager {
     constructor() {
         this.products = [];
-        this.path = "./product.txt"
+        this.patch = "./product.txt"
     }
     // hacemos que el id arranque de 0 y despus me vaya sumando cuando agrego el producto
     static id = 0
 
-    async addProduct(title, descrption, price, image, code, stock ){  
+    async addProduct(title, description, price, image, code, stock ){  
 
         // validamos si completamos todos los datos
-        if(!title || !descrption || !price || !image || !code || !stock){
+        if(!title || !description || !price || !image || !code || !stock){
             console.log("Completar todos los campos")
             return;
         }
@@ -24,7 +24,7 @@ class ProductManager {
         ProductManager.id++
         let newProduct = {
             title, 
-            descrption, 
+            description, 
             price, 
             image, 
             code, 
@@ -33,13 +33,13 @@ class ProductManager {
         };
 
         this.products.push(newProduct)
-        await fs.writeFile(this.path,JSON.stringify(this.products))
+        await fs.writeFile(this.patch,JSON.stringify(this.products), null,2)
     }
         
     // retorno productos
     async getProduct(){
         try {
-            let respuesta = await fs.readFile(this.path, "utf-8")
+            let respuesta = await fs.readFile(this.patch, "utf-8")
             console.log(JSON.parse(respuesta))
         } catch (error) {
             console.log("No se pudo leer el producto")
@@ -48,13 +48,12 @@ class ProductManager {
 
     // busco si existe el id
     async getProductById(id){
-
         try {
             const arrayProd = await this.readProduct()
             const productoEncontrado = arrayProd.find((prod) => prod.id == id)
 
             if(productoEncontrado){
-                console.log(productoEncontrado)
+                console.log("producto encontrado",productoEncontrado)
             }else{
                 console.log("No existe el producto")
             }
@@ -65,9 +64,8 @@ class ProductManager {
 
     async readProduct(){
         try {
-           const respuesta = await fs.readFile(this.path, "utf-8")
+           const respuesta = await fs.readFile(this.patch, "utf-8")
            const arrayProd = JSON.parse(respuesta)
-           console.log(arrayProd)
            return arrayProd
         } catch (error) {
             console.log("Error al leer el archivo")
@@ -76,7 +74,7 @@ class ProductManager {
 
     async guardarArchivo(arrayProd){
         try {
-            await fs.writeFile(this.path, JSON.stringify(arrayProd,null,2))
+            await fs.writeFile(this.patch, JSON.stringify(arrayProd,null,2))
         } catch (error) {
             console.log("Error al guardar el archivo")
         }
@@ -88,7 +86,7 @@ class ProductManager {
             let lastProduct = await this.readProduct()
             let productNew = [{...product, id}, ...lastProduct]
             console.log("nuevo producto",productNew)
-            await fs.writeFile(this.path, JSON.stringify(productNew,null,2))
+            await fs.writeFile(this.patch, JSON.stringify(productNew,null,2))
         } catch (error) {
             console.log("Error al modificar el producto")
         }
@@ -100,7 +98,7 @@ class ProductManager {
             let respuesta = await this.readProduct()
             let product = respuesta.filter(prod => prod.id != id)
             console.log(`Se elimino el producto con el ID: ${id}`)
-            await fs.writeFile(this.path,JSON.stringify(product))
+            await fs.writeFile(this.patch,JSON.stringify(product))
         } catch (error) {
             console.log("Error al eliminar el producto")
         }
@@ -110,22 +108,31 @@ class ProductManager {
 
 const manager = new ProductManager()
 
+/* ---------------- 1 ----------------*/
+manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1);
+manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2);
+manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3);
+manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4);
+manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
+
+/* ---------------- 2 ----------------*/
 // manager.getProduct()
+
+/* ---------------- 2 ----------------*/
 // manager.getProductById(1)
+
+/* ---------------- 3 ----------------*/
 // manager.deleteProduct(1)
-manager.updateProduct({
-    title: 'Product 3',
-    descrption: 'Product #3333',
-    price: 333,
-    image: 'imagen',
-    code: 'code3',
-    stock: 3,
-    id: 3
-  })
-// manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1)
-// manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2)
-// manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3)
-// manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4)
-// manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5)
+
+/* ---------------- 4 ----------------*/
+// manager.updateProduct({
+//     title: 'Product 333333',
+//     description: 'Product #3333',
+//     price: 333,
+//     image: 'imagen',
+//     code: 'code3',
+//     stock: 3,
+//     id: 1
+//   })
 
 
