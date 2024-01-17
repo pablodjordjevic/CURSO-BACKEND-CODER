@@ -3,7 +3,7 @@ import {promises as fs} from "fs"
 class ProductManager {
     constructor() {
         this.products = [];
-        this.patch = "./product.txt"
+        this.path = "./product.txt"
     }
     // hacemos que el id arranque de 0 y despus me vaya sumando cuando agrego el producto
     static id = 0
@@ -33,16 +33,13 @@ class ProductManager {
         };
 
         this.products.push(newProduct)
-        console.log("productitos",this.products)
-
-    
-        await fs.writeFile(this.patch,JSON.stringify(this.products))
+        await fs.writeFile(this.path,JSON.stringify(this.products))
     }
         
     // retorno productos
     async getProduct(){
         try {
-            let respuesta = await fs.readFile(this.patch, "utf-8")
+            let respuesta = await fs.readFile(this.path, "utf-8")
             console.log(JSON.parse(respuesta))
         } catch (error) {
             console.log("No se pudo leer el producto")
@@ -67,7 +64,7 @@ class ProductManager {
 
     async readProduct(){
         try {
-           const respuesta = await fs.readFile(this.patch, "utf-8")
+           const respuesta = await fs.readFile(this.path, "utf-8")
            const arrayProd = JSON.parse(respuesta)
            return arrayProd
         } catch (error) {
@@ -75,13 +72,6 @@ class ProductManager {
         }
     }
 
-    // async guardarArchivo(arrayProd){
-    //     try {
-    //         await fs.writeFile(this.patch, JSON.stringify(arrayProd,null,2))
-    //     } catch (error) {
-    //         console.log("Error al guardar el archivo")
-    //     }
-    // }
 
     async updateProduct({id, ...product}){
         try {
@@ -89,7 +79,7 @@ class ProductManager {
             let lastProduct = await this.readProduct()
             let productNew = [{...product, id}, ...lastProduct]
             console.log("nuevo producto",productNew)
-            await fs.writeFile(this.patch, JSON.stringify(productNew,null,2))
+            await fs.writeFile(this.path, JSON.stringify(productNew,null,2))
         } catch (error) {
             console.log("Error al modificar el producto")
         }
@@ -101,7 +91,7 @@ class ProductManager {
             let respuesta = await this.readProduct()
             let product = respuesta.filter(prod => prod.id != id)
             console.log(`Se elimino el producto con el ID: ${id}`)
-            await fs.writeFile(this.patch,JSON.stringify(product))
+            await fs.writeFile(this.path,JSON.stringify(product))
         } catch (error) {
             console.log("Error al eliminar el producto")
         }
@@ -119,7 +109,7 @@ const manager = new ProductManager()
 // await manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
 
 /* ---------------- 2 ----------------*/
-// manager.getProduct()
+manager.getProduct()
 
 /* ---------------- 2 ----------------*/
 // manager.getProductById(1)
