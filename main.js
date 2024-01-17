@@ -33,7 +33,10 @@ class ProductManager {
         };
 
         this.products.push(newProduct)
-        await fs.writeFile(this.patch,JSON.stringify(this.products), null,2)
+        console.log("productitos",this.products)
+
+    
+        await fs.writeFile(this.patch,JSON.stringify(this.products))
     }
         
     // retorno productos
@@ -72,13 +75,13 @@ class ProductManager {
         }
     }
 
-    async guardarArchivo(arrayProd){
-        try {
-            await fs.writeFile(this.patch, JSON.stringify(arrayProd,null,2))
-        } catch (error) {
-            console.log("Error al guardar el archivo")
-        }
-    }
+    // async guardarArchivo(arrayProd){
+    //     try {
+    //         await fs.writeFile(this.patch, JSON.stringify(arrayProd,null,2))
+    //     } catch (error) {
+    //         console.log("Error al guardar el archivo")
+    //     }
+    // }
 
     async updateProduct({id, ...product}){
         try {
@@ -109,11 +112,11 @@ class ProductManager {
 const manager = new ProductManager()
 
 /* ---------------- 1 ----------------*/
-manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1);
-manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2);
-manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3);
-manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4);
-manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
+// await manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1);
+// await manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2);
+// await manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4);
+// await manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3);
+// await manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
 
 /* ---------------- 2 ----------------*/
 // manager.getProduct()
@@ -124,7 +127,7 @@ manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
 /* ---------------- 3 ----------------*/
 // manager.deleteProduct(1)
 
-/* ---------------- 4 ----------------*/
+// /* ---------------- 4 ----------------*/
 // manager.updateProduct({
 //     title: 'Product 333333',
 //     description: 'Product #3333',
