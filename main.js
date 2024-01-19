@@ -1,3 +1,4 @@
+import express from 'express';
 import {promises as fs} from "fs"
 
 class ProductManager {
@@ -100,32 +101,40 @@ class ProductManager {
 }
 
 const manager = new ProductManager()
+const productos = await manager.readProduct();
+const PUERTO = 8080
+const app = express();
 
-/* ---------------- 1 ----------------*/
-// await manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1);
-// await manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2);
-// await manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4);
-// await manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3);
-// await manager.addProduct('Product 5','Product #4', 555, 'imagen', "code5", 5);
+app.get('/', async (req, res) =>{
+    res.send("Bienvenidos")
+    await manager.addProduct('Product 1', 'Product #1', 111, 'imagen', "code1", 1);
+    await manager.addProduct('Product 2', 'Product #2', 222, 'imagen', "code2", 2);
+    await manager.addProduct('Product 3', 'Product #3', 333, 'imagen', "code3", 3);
+    await manager.addProduct('Product 4', 'Product #4', 444, 'imagen', "code4", 4);
+    await manager.addProduct('Product 5','Product #5', 555, 'imagen', "code5", 5);
+    await manager.addProduct('Product 6','Product #6', 666, 'imagen', "code6", 6);
+    await manager.addProduct('Product 7','Product #7', 777, 'imagen', "code7", 7);
+    await manager.addProduct('Product 8','Product #8', 888, 'imagen', "code8", 8);
+    await manager.addProduct('Product 9','Product #9', 999, 'imagen', "code9", 9);
+    await manager.addProduct('Product 10','Product #10', 1010, 'imagen', "code10", 10);
+})
 
-/* ---------------- 2 ----------------*/
-manager.getProduct()
+app.get('/products' , async (req,res) =>{
+    let limit = parseInt(req.query.limit)
+    let todosProducts = await manager.readProduct();
+    let productLimit = todosProducts.slice(0,limit)
 
-/* ---------------- 2 ----------------*/
-// manager.getProductById(1)
+    limit ? res.send(productLimit) : res.send(todosProducts)
 
-/* ---------------- 3 ----------------*/
-// manager.deleteProduct(1)
+})
 
-// /* ---------------- 4 ----------------*/
-// manager.updateProduct({
-//     title: 'Product 333333',
-//     description: 'Product #3333',
-//     price: 333,
-//     image: 'imagen',
-//     code: 'code3',
-//     stock: 3,
-//     id: 1
-//   })
+app.get('/products/:id', (req,res)=>{
+    let id = req.params.id
+    let productoId = productos.find(prod => prod.id == id)
 
+    productoId ? res.send(productoId) : res.send(`No existe el producto con el ID: ${id}`)
+})
 
+app.listen(PUERTO, () =>{
+    console.log(`el puerto es ${PUERTO}`)
+})
