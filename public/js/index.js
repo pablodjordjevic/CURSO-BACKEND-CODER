@@ -35,17 +35,24 @@ const deleteProductos = (id) =>{
 }
 
 const agregarProducto = () =>{
+    const title = document.getElementById('title').value
+    const description = document.getElementById('description').value
+    const price = document.getElementById('price').value
+    const img = document.getElementById('img').value
+    const codigo = document.getElementById('codigo').value
+    const stock = document.getElementById('stock').value
+
     const products = {
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        price: document.getElementById('price').value,
-        img: document.getElementById('img').value,
-        codigo: document.getElementById('codigo').value,
-        stock: document.getElementById('stock').value
+        title: title,
+        description: description,
+        price: price,
+        img: img,
+        codigo: codigo,
+        stock: stock
     }
 
-    if (!(title && description && price && img && codigo && stock)) {
-        alert("Debe completar todos los campos");
+    if (title == '' || description == '' || price == '' || img == '' || codigo == '' || stock == '' ) {
+        console.log("Completa todo")
         return;
     }
     
