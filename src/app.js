@@ -32,6 +32,7 @@ const productManager = new ProductManager("./models/products.json")
 const io = socket(httpServer)
 
 io.on("connection", async (socket)=>{
+    console.log("Cliente conectado")
     socket.emit("productos", await productManager.getProduct())
 
     socket.on("eliminarProducto", async (id) =>{
