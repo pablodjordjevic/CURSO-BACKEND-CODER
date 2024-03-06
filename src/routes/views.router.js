@@ -51,6 +51,8 @@ router.get("/carts/:cid", async (req, res) => {
           product: item.product.toObject(), // lo convertimos en obj
           quantity: item.quantity
        }));
+
+       console.log("productos en carrito",productosEnCarrito)
  
        res.render("cart", { productos: productosEnCarrito });
     } catch (error) {

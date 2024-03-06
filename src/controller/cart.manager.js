@@ -22,7 +22,7 @@ class CartManager {
                 console.log(`No hay carrito con el id: ${id}`)
                 return null
             }
-
+            console.log("carrito", carrito)
             return carrito
         } catch (error) {
             console.log("Error al obtener el carrito",error)

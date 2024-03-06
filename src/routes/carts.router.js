@@ -19,7 +19,8 @@ router.get("/:id", async (req,res) =>{
     let id = req.params.id
     try {
         let carrito = await cartManager.getCartById(id)
-        res.json(carrito.products);
+        console.log("hplsidasd",carrito)
+        res.json(carrito);
     } catch (error) {
         console.log("No existe el carrito con ese id", error)
         res.status.json({messege: "Error del servidor"})
