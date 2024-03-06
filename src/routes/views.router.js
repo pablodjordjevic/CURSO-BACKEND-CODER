@@ -2,7 +2,10 @@ const express = require("express")
 const router = express.Router()
 
 const ProductManager = require("../controller/product.manager.js")
-const productManager = new ProductManager ("../models/producto.model.js")
+const productManager = new ProductManager()
+
+const CartManager = require("../controller/cart.manager.js")
+const cartManager = new CartManager()
 
 router.get("/products", async (req, res) => {
     try{
@@ -32,6 +35,29 @@ router.get("/products", async (req, res) => {
         response.status(500).json({error: "Error en el servidor"});
     }
 })
+
+router.get("/carts/:cid", async (req, res) => {
+    const cartId = req.params.cid;
+ 
+    try {
+       const carrito = await cartManager.getCartById(cartId);
+ 
+       if (!carrito) {
+          console.log("No existe ese carrito con el id");
+          return res.status(404).json({ error: "Carrito no encontrado" });
+       }
+ 
+       const productosEnCarrito = carrito.products.map(item => ({
+          product: item.product.toObject(), // lo convertimos en obj
+          quantity: item.quantity
+       }));
+ 
+       res.render("cart", { productos: productosEnCarrito });
+    } catch (error) {
+        console.log("Error", error);
+        res.status(500).json({error: "Error en el servidor"});
+    }
+ });
 
 
 module.exports = router

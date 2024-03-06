@@ -46,8 +46,8 @@ router.delete("/:cid/product/:pid", async (req, res) => {
     const pid = req.params.pid;
 
     try {
-        await cartManager.eliminarProductoCart(cid, pid);
-        res.json({ message: "Producto eliminado del carrito con éxito" });
+        const updateCarrito = await cartManager.eliminarProductoCart(cid, pid);
+        res.json({ message: "Producto eliminado del carrito con éxito" },updateCarrito);
     } catch (error) {
         console.log("Error al eliminar el producto del carrito", error);
         res.status(500).json({ message: "Error del servidor al eliminar el producto del carrito" });
@@ -61,8 +61,8 @@ router.put("/:cid/product/:pid", async (req, res) => {
     const quantity = req.body.quantity || 1;
 
     try {
-        await cartManager.actualizarCantidadProductoCart(cid, pid, quantity);
-        res.json({ message: "Cantidad de producto actualizada con éxito" });
+        const updateCarrito = await cartManager.actualizarCantidadProductoCart(cid, pid, quantity);
+        res.json({ message: "Cantidad de producto actualizada con éxito" },updateCarrito);
     } catch (error) {
         console.log("Error al actualizar la cantidad del producto en el carrito", error);
         res.status(500).json({ message: "Error del servidor al actualizar la cantidad del producto en el carrito" });
@@ -74,8 +74,8 @@ router.delete("/:cid", async (req, res) => {
     const cid = req.params.cid;
 
     try {
-        await cartManager.vaciarCarrito(cid);
-        res.json({ message: "Carrito vaciado con éxito" });
+        const updateCarrito = await cartManager.vaciarCarrito(cid);
+        res.json({ message: "Carrito vaciado con éxito" },updateCarrito);
     } catch (error) {
         console.log("Error al vaciar el carrito", error);
         res.status(500).json({ message: "Error del servidor al vaciar el carrito" });

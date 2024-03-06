@@ -76,7 +76,7 @@ class CartManager {
                 console.log(`No hay carrito con el id: ${id}`)
             }
     
-            const productoEnCarrito = carrito.products.find(item => item.product.toString() === idProducto);
+            const productoEnCarrito = carrito.products.find(item => item.product.toString() == idProducto);
     
             if (productoEnCarrito) {
                 productoEnCarrito.quantity = cantidad;
