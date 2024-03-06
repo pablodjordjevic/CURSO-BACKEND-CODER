@@ -4,20 +4,32 @@ const router = express.Router()
 const ProductManager = require("../controller/product.manager.js")
 const productManager = new ProductManager()
 
-
-
 router.get("/", async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit);
-        const todosProducts = await productManager.getProducts();
-        
-        if (!isNaN(limit) && limit > 0) {
-            const productLimit = todosProducts.slice(0, limit);
-            res.json(productLimit);
-        } else {
-            res.json(todosProducts);
-        }
+
+        const { limit = 10, page = 1, sort, query } = req.query;
+        const products = await productManager.getProducts({
+            limit: parseInt(limit),
+            page: parseInt(page),
+            sort,
+            query,
+        });
+
+        res.json({
+            status: 'success',
+            payload: products,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: products.hasPrevPage ? `/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}` : null,
+            nextLink: products.hasNextPage ? `/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}` : null,
+        });
+
     } catch (error) {
+
         console.error("Error al obtener los productos:", error);
         res.status(500).json({ message: "Error en el servidor" });
     }
@@ -35,8 +47,7 @@ router.post("/", async (req,res) =>{
 })
 
 
-
-router.put("/productModif/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     const productId = req.params.id
     try {
         await productManager.updateProduct(productId, req.body);
@@ -47,14 +58,6 @@ router.put("/productModif/:id", async (req, res) => {
 });
 
  
-
-router.get("/:id", async (req,res)=>{
-    let id = req.params.id
-    const productoId = await productManager.getProductsById(id)
-
-    productoId ? res.send(productoId) : res.send(`No existe el producto con el ID: ${id}`)
-})
-
 router.delete("/:id", async (req,res) => {
     const id = req.params.id
     

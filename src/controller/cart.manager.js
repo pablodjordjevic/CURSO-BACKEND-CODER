@@ -47,6 +47,67 @@ class CartManager {
             res.status(500).json({messege: "Hubo un error en el servidor"})
         }
     }
+
+
+    // de aca en adelante probar bien
+    async eliminarProductoCart(idCarrito, idProducto) {
+        try {
+            const carrito = await CartModel.findById(idCarrito);
+    
+            if (!carrito) {
+                console.log(`No hay carrito con el id: ${id}`)
+
+                return null
+            }
+    
+            carrito.products = carrito.products.filter(item => item.product.toString() != idProducto);
+            await carrito.save();
+        } catch (error) {
+            console.log("Error al eliminar el producto del carrito", error);
+            res.status(500).json({messege: "Hubo un error en el servidor"})
+        }
+    }
+
+    async actualizarCantidadProductoCart(idCarrito, idProducto, cantidad) {
+        try {
+            const carrito = await CartModel.findById(idCarrito);
+    
+            if (!carrito) {
+                console.log(`No hay carrito con el id: ${id}`)
+            }
+    
+            const productoEnCarrito = carrito.products.find(item => item.product.toString() === idProducto);
+    
+            if (productoEnCarrito) {
+                productoEnCarrito.quantity = cantidad;
+                await carrito.save();
+            } else {
+                throw new Error("El producto no existe en el carrito");
+            }
+        } catch (error) {
+            console.log("Error al eliminar el producto del carrito", error);
+            res.status(500).json({messege: "Hubo un error en el servidor"})
+        }
+    }
+    
+
+    async vaciarCarrito(idCarrito) {
+        try {
+            const carrito = await CartModel.findById(idCarrito);
+    
+            if (!carrito) {
+                console.log(`No hay carrito con el id: ${id}`)
+
+            }
+            carrito.products = [];
+            await carrito.save();
+        } catch (error) {
+            console.log("Error al eliminar el producto del carrito", error);
+            res.status(500).json({messege: "Hubo un error en el servidor"})
+        }
+    }
+    
+    
 }
 
 
