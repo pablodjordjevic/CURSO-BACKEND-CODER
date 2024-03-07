@@ -1,6 +1,10 @@
-{{#each productos}}
-        <div>
-            <p>Producto: {{this.product.title}}</p>
-            <p>Cantidad: {{this.quantity}}</p>
+<div class="grid grid-cols-4 gap-4 p-10 justify-items-center">
+    {{#each productos}}
+        <div class="max-w-sm rounded overflow-hidden shadow-lg">
+            <div class="p-5">
+                <h2 class="font-bold mb-2 text-2xl text-purple-800">{{this.product.title}}</h2>
+                <p class="text-purple-700 mb-2">Cantidad: {{this.quantity}}</p>
+            </div>
         </div>
     {{/each}}
+</div>
