@@ -61,6 +61,14 @@ router.get("/carts/:cid", async (req, res) => {
     }
  });
 
+ router.get("/login", (req, res) => {
+    if (req.session.login) {
+        return res.redirect("/profile");
+    }
+    res.render("login");
+});
+
+
  router.get("/register", (req, res) => {
     if (req.session.login) {
         return res.redirect("/profile");
@@ -69,7 +77,7 @@ router.get("/carts/:cid", async (req, res) => {
 });
 
 router.get("/profile", (req, res) => {
-    console.log("req",req)
+
     if (!req.session.login) {
         return res.redirect("/login");
     }

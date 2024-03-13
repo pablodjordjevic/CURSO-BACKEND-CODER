@@ -5,9 +5,12 @@ const productRouter = require("./routes/products.router.js")
 const cartRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
 const userRouter = require("./routes/user.router.js")
+const sessionRouter = require("./routes/sessions.router.js");
 const exphbs = require("express-handlebars"); 
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
+const initializePassport = require("./config/passport.config.js");
+const passport = require("passport");
 require("./database.js")
 
 //middleware
@@ -23,16 +26,21 @@ app.use(session({
     })
 }))
 
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 // handlebars
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
 app.set("views", "./src/views"); 
 
 // rutas
-app.use("/api/products",productRouter)
-app.use("/api/cart",cartRouter)
-app.use("/api/users",userRouter)
-app.use("/",viewsRouter)
+app.use("/api/products", productRouter)
+app.use("/api/cart", cartRouter)
+app.use("/api/users", userRouter)
+app.use("/api/sessions", sessionRouter)
+app.use("/", viewsRouter)
 
 app.listen(PUERTO, () =>{
     console.log(`el puerto es ${PUERTO}`)

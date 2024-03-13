@@ -1,5 +1,8 @@
 <h1>perfil</h1>
-<p>BIENVENIDO , {{user.first_name}}, {{user.last_name}}</p>
-<p>email: {{user.email}}</p>
-<p>edad , {{user.age}}</p>
-<a href="/api/session/logout"></a>
+
+<form action="/api/sessions/logout" method="POST">
+    <p>BIENVENIDO , {{user.first_name}}, {{user.last_name}}</p>
+    <p>email: {{user.email}}</p>
+    <p>edad , {{user.age}}</p>
+    <button type="submit" >logout</button>
+</form>
