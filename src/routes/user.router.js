@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const UserModel = require("../models/user.model.js")
-const { createHash } = require("../utils/hashbcryptjs")
+const { createHash } = require("../utils/hashbcrypt.js")
 const passport = require("passport")
 
 
@@ -38,7 +38,6 @@ const passport = require("passport")
 
 router.post("/", passport.authenticate("register", {failureRedirect: "/failRegister"}), async(req,res) => {
     if(!req.user) return res.status(400).send({status: error})
-
     req.session.user = {
         first_name : req.user.first_name,
         last_name : req.user.last_name,
